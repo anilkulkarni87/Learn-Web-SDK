@@ -1,0 +1,26 @@
+version: '3.8'
+
+networks:
+  my-network:
+  
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    ports:
+      - "8080:80"
+    networks:
+      - my-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    ports:
+      - "5010:5010"
+    networks:
+      - my-network
+

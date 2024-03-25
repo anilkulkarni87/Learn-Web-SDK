@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web SDK Test</title>
+</head>
+
+<body>
+    <h1>Web SDK Test</h1>
+    <button onclick="trackPageView()">Track Page View</button>
+    <button onclick="trackCustomEvent()">Track Custom Event</button>
+
+    <input type="radio" id="magicOption" name="trackingOption" value="Magic">
+    <label for="magicOption">Magic</label>
+
+    <!-- Include your modified Web SDK script -->
+    <script src="your_sdk.js"></script>
+
+
+    <script>
+        // Initialize the SDK with your API key
+        MyTrackingSDK.initialize('YOUR_API_KEY');
+
+        // Function to track a page view
+        function trackPageView() {
+            MyTrackingSDK.trackPageView(window.location.href);
+            // console.log('Page view tracked.');
+        }
+
+
+
+        // Function to track a custom event
+        function trackCustomEvent() {
+            MyTrackingSDK.trackEvent('button_click', { button_name: 'Custom Button' });
+            // console.log('Custom event tracked.');
+        }
+
+        // Add an event listener to track page views when the page is fully loaded
+        window.addEventListener('load', function () {
+            // Track page view with the current URL
+            MyTrackingSDK.trackPageView(window.location.href);
+        });
+
+        // Event listener for the radio button
+        document.getElementById('magicOption').addEventListener('change', function () {
+            if (this.checked && this.value === 'Magic') {
+                // Track the selection of the "Magic" option
+                var magicValue = this.value;
+                MyTrackingSDK.trackEvent('radio_selection', { option_value: magicValue });
+                // console.log('Magic option selected and tracked. Value:', magicValue);
+            }
+        });
+
+        // Event listener to capture mouse clicks on elements
+        document.body.addEventListener('click', function(event) {
+            var clickedElement = event.target;
+            var elementType = clickedElement.tagName.toLowerCase();
+            var elementId = clickedElement.id;
+            var elementClass = clickedElement.className;
+            var elementText = clickedElement.textContent || clickedElement.innerText;
+
+            // Track the click event and capture details
+            MyTrackingSDK.trackEvent('element_click', { 
+                element_type: elementType,
+                element_id: elementId,
+                element_class: elementClass,
+                element_text: elementText
+            });
+            console.log('Element clicked:', clickedElement);
+        });
+    </script>
+</body>
+
+</html>
